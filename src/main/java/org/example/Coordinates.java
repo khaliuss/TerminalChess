@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.pieces.CoordinatesShift;
+
 import java.util.Objects;
 
 public class Coordinates {
@@ -12,6 +14,20 @@ public class Coordinates {
         this.rank = rank;
     }
 
+    public Coordinates shift(CoordinatesShift shift) {
+        return new Coordinates(File.values()[this.file.ordinal() + shift.fileShift], this.rank + shift.rankShift);
+    }
+
+    public boolean canShift(CoordinatesShift shift) {
+        int f = file.ordinal() + shift.fileShift;
+        int r = rank + shift.rankShift;
+
+        if (f < 0 || f > 7) return false;
+        if (r <= 0 || r > 8) return false;
+
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -22,5 +38,10 @@ public class Coordinates {
     @Override
     public int hashCode() {
         return Objects.hash(file, rank);
+    }
+
+    @Override
+    public String toString() {
+        return  file.name() + rank;
     }
 }
